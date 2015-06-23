@@ -1,7 +1,16 @@
 <?php
-require_once('help/dbConnection.php');
+function dbConnection() {
+	if (!defined('SAE_MYSQL_HOST_M')) {
+		$pdo = new PDO("mysql:host=127.0.0.1;dbname=analytics", 'root', '');
+	} else {
+		$pdo = new PDO("mysql:host=".SAE_MYSQL_HOST_M.";port=".SAE_MYSQL_PORT.";dbname=".SAE_MYSQL_DB, SAE_MYSQL_USER, SAE_MYSQL_PASS);
+	}
+	return $pdo;
+}
+
 
 function parse() {
+	$db = dbConnection();
 	if($_GET['type'] === 'get') {
 		$pages = json_decode($_REQUEST['pages']);
 		if (!is_array($pages)) {
@@ -11,10 +20,12 @@ function parse() {
 		foreach ($pages as $index => $page) {
 			if (isset($page->url) && isset($page->domain)) {
 				$sql = "SELECT * FROM page WHERE url = '{$page->url}' AND `domain` = '{$page->domain}'";
-				$rs = mysql_query($sql) or die(mysql_error());
-				$row = mysql_fetch_assoc($rs);
-				if ($row) {
-					$page->id = $row['id'];
+				$rows = $db->query($sql) or die(print_r($db->errorInfo(), true));
+				if ($rows->rowCount()) {
+					$row = $rows->fetch(PDO::FETCH_ASSOC);
+					$page->count = $row['count'];
+				} else {
+					$page->count = 0;
 				}
 			} else {
 				unset($pages[$index]);
@@ -23,15 +34,15 @@ function parse() {
 		return json_encode($pages);
 	} else if($_GET['type'] === 'post') {
 		$sql = "SELECT * FROM page WHERE url = '{$_REQUEST['url']}' AND `domain` = '{$_REQUEST['domain']}'";
-		$rs = mysql_query($sql) or die(mysql_error());
-		$row = mysql_fetch_assoc($rs);
-		if ($row) {
+		$rows = $db->query($sql) or die(print_r($db->errorInfo(), true));
+		if ($rows->rowCount()) {
+			$row = $rows->fetch(PDO::FETCH_ASSOC);
 			$count = ++$row['count'];
 			$sql = "UPDATE page SET `count` = $count WHERE id = {$row['id']}";
-			mysql_query($sql) or die(mysql_error());
+			$db->exec($sql) or die(print_r($db->errorInfo(), true));
 		} else {
 			$sql = "INSERT INTO page (url, `domain`, `count`) VALUES ('{$_REQUEST['url']}', '{$_REQUEST['domain']}', 1)";
-			mysql_query($sql) or die(mysql_error());
+			$db->exec($sql) or die(print_r($db->errorInfo(), true));
 			$row = [
 				'url' => $_REQUEST['url'],
 				'domain' => $_REQUEST['domain'],
