@@ -1,6 +1,54 @@
 # Jerry Analytics
 Jerry Analytics is a simple data collector for visit statistics.
 
+## Usage Sample
+
+Send `JSONP` requests to `http://analytics1.sinaapp.com/page.php`
+
+### Increase the count of a visited page
+
+```
+var url = 'http://analytics1.sinaapp.com/page.php'
+            + '?type=increment'
+            + '&callback=func'
+            + '&domain=' + encodeURIComponent("http://jerryzou.com")
+            + '&url=' + encodeURIComponent("http://jerryzou.com/posts/aboutNormalizeCss/");
+
+var head = document.getElementsByTagName('head')[0]; 
+var jsonp = document.createElement("script"); 
+jsonp.src= url; 
+head.appendChild(jsonp);
+
+function func(result) {
+    console.log(result.count);
+}
+```
+
+### Get the count of several pages
+
+
+```
+var pages = [
+    { domain: "http://jerryzou.com", url: "http://jerryzou.com/posts/aboutNormalizeCss/" },
+    { domain: "http://jerryzou.com", url: "http://jerryzou.com/about/" },
+];
+var url = 'http://analytics1.sinaapp.com/page.php';
+           + '?type=get';
+           + '&callback=func'
+           + '&pages=' + encodeURIComponent(JSON.stringify(pages));
+
+var head = document.getElementsByTagName('head')[0]; 
+var jsonp = document.createElement("script"); 
+jsonp.src= url;
+head.appendChild(jsonp);
+
+function func(result) {
+	for (var i = 0; i < result.length; i++) {
+	    console.log(result[i].count);
+	}
+}
+```
+
 ## API
 
 ###1. `page.php?type=increment`
@@ -26,15 +74,15 @@ jsonp_callback({
 
 ###2. `page.php?type=get`
 
-Get the count of several pages
+Get the count of several pages.
 
 | Argument | Value | Explanation |
 | ------ | --- | --- |
 | type | get | - |
 | callback | jsonp_callback | The callback will be called when the jsonp request returns. |
-| pages | [] | an array contains the domain and url of several pages |
+| pages | [] | an array contains the domains and urls of several pages |
 
-####sample of pages
+####sample of `pages`
 
 ```
 var pages = [
@@ -55,7 +103,7 @@ var pages = [
 url += encodeURIComponent(pages);
 ```
 
-**Notice**The length of the url of jsonp request should be limited to 1024, because the request method that jsonp uses is `GET`.
+**Notice**: The length of the url of jsonp request should be limited to **1024**, because the request method that jsonp uses is `GET`.
 
 ####Response
 
@@ -74,50 +122,4 @@ jsonp_callback([
         count: 100
     },
 ]);
-```
-
-## Usage Sample
-
-Send `JSONP` requests to `http://analytics1.sinaapp.com/page.php`
-
-### Post a new visit to the server
-
-```
-var url = 'http://analytics1.sinaapp.com/page.php'
-            + '?type=increment'
-            + '&callback=func'
-            + '&domain=' + encodeURIComponent("http://jerryzou.com")
-            + '&url=' + encodeURIComponent("http://jerryzou.com/posts/aboutNormalizeCss/");
-
-var head = document.getElementsByTagName('head')[0]; 
-var jsonp = document.createElement("script"); 
-jsonp.src= url; 
-head.appendChild(jsonp);
-
-function func(result) {
-    console.log(result);
-}
-```
-
-### Get the count of several pages
-
-
-```
-var pages = [
-    { domain: "http://jerryzou.com", url: "http://jerryzou.com/posts/aboutNormalizeCss/" },
-    { domain: "http://jerryzou.com", url: "http://jerryzou.com/about/" },
-];
-var url = 'http://analytics1.sinaapp.com/page.php';
-           + '?type=get';
-           + '&callback=func'
-           + '&pages=' + encodeURIComponent(JSON.stringify(pages));
-
-var head = document.getElementsByTagName('head')[0]; 
-var jsonp = document.createElement("script"); 
-jsonp.src= url;
-head.appendChild(jsonp);
-
-function func(result) {
-    console.log(result);
-}
 ```
