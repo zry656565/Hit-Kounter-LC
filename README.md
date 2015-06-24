@@ -1,6 +1,27 @@
 # Jerry Analytics
 Jerry Analytics is a simple data collector for visit statistics.
 
+## Prepare: JSONP Module
+
+Create a module for sending jsonp
+
+```
+var jsonp = function(url, args) {
+    var head = document.getElementsByTagName('head')[0],
+        script = document.createElement("script"),
+        first = true,
+        value;
+    
+    for (var key in args) {
+        value = encodeURIComponent(args[key]);
+        url += first ? ('?' + key + '=' + value) : ('&' + key + '=' + value);
+        first = false;
+    }
+    script.src= url;
+    head.appendChild(script);
+}
+```
+
 ## Usage Sample
 
 Send `JSONP` requests to `http://analytics1.sinaapp.com/page.php`
@@ -8,43 +29,54 @@ Send `JSONP` requests to `http://analytics1.sinaapp.com/page.php`
 ### Increase the count of a visited page
 
 ```
-var url = 'http://analytics1.sinaapp.com/page.php'
-            + '?type=increment'
-            + '&callback=func'
-            + '&domain=' + encodeURIComponent("http://jerryzou.com")
-            + '&url=' + encodeURIComponent("http://jerryzou.com/posts/aboutNormalizeCss/");
+jsonp('http://analytics1.sinaapp.com/page.php', {
+    callback: 'func',
+    type: 'increment',
+    domain: 'http://jerryzou.com',
+    url: 'http://jerryzou.com/posts/aboutNormalizeCss/',
+    title: 'About Normalize.css'
+});
 
-var head = document.getElementsByTagName('head')[0]; 
-var jsonp = document.createElement("script"); 
-jsonp.src= url; 
-head.appendChild(jsonp);
-
+//callback
 function func(result) {
-    console.log(result.count);
+    console.log(result.url, result.count);
 }
 ```
 
 ### Get the count of several pages
 
-
 ```
-var pages = [
-    { domain: "http://jerryzou.com", url: "http://jerryzou.com/posts/aboutNormalizeCss/" },
-    { domain: "http://jerryzou.com", url: "http://jerryzou.com/about/" },
-];
-var url = 'http://analytics1.sinaapp.com/page.php';
-           + '?type=get';
-           + '&callback=func'
-           + '&pages=' + encodeURIComponent(JSON.stringify(pages));
+jsonp('http://analytics1.sinaapp.com/page.php', {
+    callback: 'func',
+    type: 'get',
+    pages: JSON.stringify([
+        { domain: "http://jerryzou.com", url: "http://jerryzou.com/posts/aboutNormalizeCss/" },
+        { domain: "http://jerryzou.com", url: "http://jerryzou.com/about/" },
+    ])
+});
 
-var head = document.getElementsByTagName('head')[0]; 
-var jsonp = document.createElement("script"); 
-jsonp.src= url;
-head.appendChild(jsonp);
-
+//callback
 function func(result) {
 	for (var i = 0; i < result.length; i++) {
-	    console.log(result[i].count);
+	    console.log(result[i].url, result[i].count);
+	}
+}
+```
+
+### Get the pages which have been mostly visited
+
+```
+jsonp('http://analytics1.sinaapp.com/page.php', {
+    callback: 'func',
+    type: 'getTop',
+    domain: 'http://jerryzou.com',
+    number: '5'
+});
+
+//callback
+function func(result) {
+	for (var i = 0; i < result.length; i++) {
+	    console.log(result[i].title, result[i].count);
 	}
 }
 ```
@@ -59,16 +91,23 @@ When someone visit your website, increase the count of a visited page.
 | ------ | --- | --- |
 | type | increment | - |
 | callback | jsonp_callback | The callback will be called when the jsonp request returns. |
-| domain | http%3A%2F%2Fwww.a.com | domain of your site |
-| url | http%3A%2F%2Fwww.a.com%2Fpage%2F | url of current page |
+| domain | http://a.com | domain of your site |
+| url | http://a.com/page/ | url of current page |
 
-####Response
+####Request Sample
+
+```
+http://analytics1.sinaapp.com/page.php?callback=jsonp_callback&type=increment&domain=http%3A%2F%2Fjerryzou.com&url=http%3A%2F%2Fjerryzou.com%2Fposts%2FaboutNormalizeCss%2F&title=About%20Normalize.css
+```
+
+####Response Sample
 
 ```
 jsonp_callback({
-    "domain": "http%3A%2F%2Fwww.a.com",
-    "url": "http%3A%2F%2Fwww.a.com%2Fpage%2F",
-    "count": 100
+    "domain": "http://jerryzou.com",
+    "url": "http://jerryzou.com/posts/aboutNormalizeCss/",
+    "count": 2443,
+    "title": "About Normalize.css"
 });
 ```
 
@@ -80,46 +119,75 @@ Get the count of several pages.
 | ------ | --- | --- |
 | type | get | - |
 | callback | jsonp_callback | The callback will be called when the jsonp request returns. |
-| pages | [] | an array contains the domains and urls of several pages |
+| pages | (see the [sample below](#get-the-count-of-several-pages)) | an array contains the domains and urls of several pages |
 
-####sample of `pages`
+####Request Sample
 
 ```
-var pages = [
-    { 
-        domain: "http://jerryzou.com",
-        url: "http://jerryzou.com/posts/aboutNormalizeCss/",
-        //You can add some additional variables, and the response will carry them
-        name: "About Normalize.css"
-    },
-    {
-        domain: "http://jerryzou.com",
-        url: "http://jerryzou.com/about/",
-        name: "About Me"
-    },
-];
-
-//Don't forget encode `pages`;
-url += encodeURIComponent(pages);
+http://analytics1.sinaapp.com/page.php?callback=jsonp_callback&type=get&pages=%5B%7B%22domain%22%3A%22http%3A%2F%2Fjerryzou.com%22%2C%22url%22%3A%22http%3A%2F%2Fjerryzou.com%2Fposts%2FaboutNormalizeCss%2F%22%7D%2C%7B%22domain%22%3A%22http%3A%2F%2Fjerryzou.com%22%2C%22url%22%3A%22http%3A%2F%2Fjerryzou.com%2Fabout%2F%22%7D%5D
 ```
 
 **Notice**: The length of the url of jsonp request should be limited to **1024**, because the request method that jsonp uses is `GET`.
 
-####Response
+####Response Sample
 
 ```
 jsonp_callback([
-	{ 
-        domain: "http://jerryzou.com",
-        url: "http://jerryzou.com/posts/aboutNormalizeCss/",
-        name: "About Normalize.css",
-        count: 150
-    },
     {
-        domain: "http://jerryzou.com",
-        url: "http://jerryzou.com/about/",
-        name: "About Me",
-        count: 100
-    },
+        "domain": "http://jerryzou.com",
+        "url": "http://jerryzou.com/posts/aboutNormalizeCss/",
+        "title": "About Normalize.css",
+        "count": 2443
+    }, {
+        "domain": "http://jerryzou.com",
+        "url": "http://jerryzou.com/about/",
+        "title": "About Me",
+        "count": 0
+    }
+]);
+```
+
+###3. `page.php?type=getTop`
+
+Get the pages which have been mostly visited.
+
+| Argument | Value | Explanation |
+| ------ | --- | --- |
+| type | increment | - |
+| callback | jsonp_callback | The callback will be called when the jsonp request returns. |
+| domain | http://a.com | domain of your site |
+| number | 5 | get top 5 pages  |
+
+####Request Sample
+
+```
+http://analytics1.sinaapp.com/page.php?callback=jsonp_callback&type=getTop&domain=http%3A%2F%2Fjerryzou.com&number=5
+```
+
+####Response Sample
+
+```
+jsonp_callback([
+    {
+        "url": "http://jerryzou.com/posts/aboutNormalizeCss/",
+        "title": "",
+        "count": 2443
+    }, {
+        "url": "http://jerryzou.com/posts/shadowsocks-with-digitalocean/",
+        "title": "",
+        "count": 1123
+    }, {
+        "url": "http://jerryzou.com/posts/sjtuBusFeedback/",
+        "title": "",
+        "count": 488
+    }, {
+        "url": "http://jerryzou.com/posts/bulkUploadToUPYUN/",
+        "title": "",
+        "count": 437
+    }, {
+        "url": "http://jerryzou.com/posts/usePygments/",
+        "title": "",
+        "count": 274
+    }
 ]);
 ```
