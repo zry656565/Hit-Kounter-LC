@@ -12,7 +12,7 @@ function dbConnection() {
 function parse() {
     $db = dbConnection();
 
-    // Get the count of several pages
+    // get the count of several pages
     if ($_GET['type'] === 'get') {
         $pages = json_decode($_GET['pages']);
         if (!is_array($pages)) {
@@ -25,6 +25,7 @@ function parse() {
                 $rows = $db->query($sql) or die(print_r($db->errorInfo(), true));
                 if ($rows->rowCount()) {
                     $row = $rows->fetch(PDO::FETCH_ASSOC);
+                    $page->title = $row['title'];
                     $page->count = intval($row['count']);
                 } else {
                     $page->count = 0;
