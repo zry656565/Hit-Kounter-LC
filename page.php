@@ -12,7 +12,7 @@ function dbConnection() {
 function parse() {
 	$db = dbConnection();
 	if($_GET['type'] === 'get') {
-		$pages = json_decode($_REQUEST['pages']);
+		$pages = json_decode($_GET['pages']);
 		if (!is_array($pages)) {
 			header("HTTP/1.1 400 Bad Request");
 			return '';
@@ -32,8 +32,8 @@ function parse() {
 			}
 		}
 		return json_encode($pages);
-	} else if($_GET['type'] === 'post') {
-		$sql = "SELECT * FROM page WHERE url = '{$_REQUEST['url']}' AND `domain` = '{$_REQUEST['domain']}'";
+	} else if($_GET['type'] === 'increment') {
+		$sql = "SELECT * FROM page WHERE url = '{$_GET['url']}' AND `domain` = '{$_GET['domain']}'";
 		$rows = $db->query($sql) or die(print_r($db->errorInfo(), true));
 		if ($rows->rowCount()) {
 			$row = $rows->fetch(PDO::FETCH_ASSOC);
@@ -41,11 +41,11 @@ function parse() {
 			$sql = "UPDATE page SET `count` = $count WHERE id = {$row['id']}";
 			$db->exec($sql) or die(print_r($db->errorInfo(), true));
 		} else {
-			$sql = "INSERT INTO page (url, `domain`, `count`) VALUES ('{$_REQUEST['url']}', '{$_REQUEST['domain']}', 1)";
+			$sql = "INSERT INTO page (url, `domain`, `count`) VALUES ('{$_GET['url']}', '{$_GET['domain']}', 1)";
 			$db->exec($sql) or die(print_r($db->errorInfo(), true));
 			$row = [
-				'url' => $_REQUEST['url'],
-				'domain' => $_REQUEST['domain'],
+				'url' => $_GET['url'],
+				'domain' => $_GET['domain'],
 				'count' => 1,
 			];
 		}
@@ -55,4 +55,4 @@ function parse() {
 }
 
 $result = parse();
-echo "{$_REQUEST['callback']}($result);";
+echo "{$_GET['callback']}($result);";
