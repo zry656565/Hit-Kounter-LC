@@ -27,6 +27,7 @@ CREATE TABLE `page` (
   `domain` varchar(100) NOT NULL,
   `url` varchar(300) NOT NULL,
   `count` int(11) NOT NULL DEFAULT '0',
+  `title` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -41,4 +42,4 @@ CREATE TABLE `page` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-06-23 22:00:18
+-- Dump completed on 2015-06-24 23:40:30
