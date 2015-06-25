@@ -71,6 +71,20 @@ function parse() {
         }
         return json_encode($result);
     }
+    // get the count of all pages under the same domain
+    else if ($_GET['type'] === 'getByDomain') {
+        $result = [];
+        $sql = "SELECT * FROM page WHERE `domain` = '{$_GET['domain']}'";
+        $rows = $db->query($sql) or die(print_r($db->errorInfo(), true));
+        foreach ($rows as $row) {
+            $result[] = [
+                'url' => $row['url'],
+                'title' => $row['title'],
+                'count' => intval($row['count']),
+            ];
+        }
+        return json_encode($result);
+    }
 }
 
 $result = parse();
