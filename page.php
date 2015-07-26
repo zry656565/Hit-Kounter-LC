@@ -21,10 +21,13 @@ function parse() {
         }
         foreach ($pages as $index => $page) {
             if (isset($page->url) && isset($page->domain)) {
-                $sql = "SELECT * FROM page WHERE url = '{$page->url}' AND `domain` = '{$page->domain}'";
-                $rows = $db->query($sql) or die(print_r($db->errorInfo(), true));
-                if ($rows->rowCount()) {
-                    $row = $rows->fetch(PDO::FETCH_ASSOC);
+                $sql = $db->prepare("SELECT * FROM page WHERE url = :url AND `domain` = :domain");
+                $count = $sql->execute([
+                    ':url' => $page->url,
+                    ':domain' => $page->domain
+                ]) or die(print_r($db->errorInfo(), true));
+                if ($count) {
+                    $row = $sql->fetch(PDO::FETCH_ASSOC);
                     $page->title = $row['title'];
                     $page->count = intval($row['count']);
                 } else {
