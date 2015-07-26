@@ -22,11 +22,11 @@ function parse() {
         foreach ($pages as $index => $page) {
             if (isset($page->url) && isset($page->domain)) {
                 $sql = $db->prepare("SELECT * FROM page WHERE url = :url AND `domain` = :domain");
-                $count = $sql->execute([
+                $sql->execute([
                     ':url' => $page->url,
-                    ':domain' => $page->domain
-                ]) or die(print_r($db->errorInfo(), true));
-                if ($count) {
+                    ':domain' => $page->domain,
+                ]) or die(print_r($sql->errorInfo(), true));
+                if ($sql->rowCount()) {
                     $row = $sql->fetch(PDO::FETCH_ASSOC);
                     $page->title = $row['title'];
                     $page->count = intval($row['count']);
@@ -41,19 +41,30 @@ function parse() {
     }
     // increase the count of a visited page
     else if ($_GET['type'] === 'increment') {
-        $sql = "SELECT * FROM page WHERE url = '{$_GET['url']}' AND `domain` = '{$_GET['domain']}'";
-        $rows = $db->query($sql) or die(print_r($db->errorInfo(), true));
-        if ($rows->rowCount()) {
-            $row = $rows->fetch(PDO::FETCH_ASSOC);
+        $sql = $db->prepare("SELECT * FROM page WHERE url = :url AND `domain` = :domain");
+        $sql->execute([
+            ':url' => $_GET['url'],
+            ':domain' => $_GET['domain'],
+        ]) or die(print_r($sql->errorInfo(), true));
+        if ($sql->rowCount()) {
+            $row = $sql->fetch(PDO::FETCH_ASSOC);
             $count = ++$row['count'];
-            $sql = "UPDATE page SET `count` = $count WHERE id = {$row['id']}";
-            $db->exec($sql) or die(print_r($db->errorInfo(), true));
+            $sql = $db->prepare("UPDATE page SET `count` = :count WHERE id = :id");
+            $sql->execute([
+                ':count' => $count,
+                ':id' => $row['id'],
+            ]) or die(print_r($sql->errorInfo(), true));
         } else {
-            $sql = "INSERT INTO page (url, `domain`, title, `count`) VALUES ('{$_GET['url']}', '{$_GET['domain']}', '{$_GET['title']}', 1)";
-            $db->exec($sql) or die(print_r($db->errorInfo(), true));
+            $sql = $db->prepare("INSERT INTO page (url, `domain`, title, `count`) VALUES (:url, :domain, :title, 1)");
+            $sql->execute([
+                ':url' => $_GET['url'],
+                ':domain' => $_GET['domain'],
+                ':title' => $_GET['title'],
+            ]) or die(print_r($sql->errorInfo(), true));
             $row = [
                 'url' => $_GET['url'],
                 'domain' => $_GET['domain'],
+                'title' => $_GET['title'],
                 'count' => 1,
             ];
         }
@@ -62,8 +73,12 @@ function parse() {
     }
     // get the pages which have been mostly visited
     else if ($_GET['type'] === 'getTop') {
-        $sql = "SELECT * FROM page WHERE `domain` = '{$_GET['domain']}' ORDER BY `count` DESC LIMIT {$_GET['number']}";
-        $rows = $db->query($sql) or die(print_r($db->errorInfo(), true));
+        $sql = $db->prepare("SELECT * FROM page WHERE `domain` = :domain ORDER BY `count` DESC LIMIT :number");
+        $number = intval($_GET['number']);
+        $sql->bindParam(':number', $number, PDO::PARAM_INT);
+        $sql->bindParam(':domain', $_GET['domain']);
+        $sql->execute() or die(print_r($sql->errorInfo(), true));
+        $rows = $sql->fetchAll();
         $result = [];
         foreach ($rows as $row) {
             $result[] = [
@@ -77,8 +92,9 @@ function parse() {
     // get the count of all pages under the same domain
     else if ($_GET['type'] === 'getByDomain') {
         $result = [];
-        $sql = "SELECT * FROM page WHERE `domain` = '{$_GET['domain']}'";
-        $rows = $db->query($sql) or die(print_r($db->errorInfo(), true));
+        $sql = $db->prepare("SELECT * FROM page WHERE `domain` = :domain");
+        $sql->execute([':domain' => $_GET['domain']]);
+        $rows = $sql->fetchAll() or die(print_r($sql->errorInfo(), true));
         foreach ($rows as $row) {
             $result[] = [
                 'url' => $row['url'],
@@ -91,4 +107,5 @@ function parse() {
 }
 
 $result = parse();
+if ($result) header('Content-Type: application/javascript');
 echo "{$_GET['callback']}($result);";
