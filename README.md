@@ -140,7 +140,7 @@ Get the count of several pages.
 | ------ | --- | --- |
 | type | get | - |
 | callback | jsonp_callback | The callback will be called when the jsonp request returns. |
-| pages | (see the [sample below](#get-the-count-of-several-pages)) | an array contains the domains and urls of several pages |
+| pages | (see the [sample below](#2-get-the-count-of-several-pages)) | an array contains the domains and urls of several pages |
 
 ####Request Sample
 
