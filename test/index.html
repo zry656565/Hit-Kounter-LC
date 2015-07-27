@@ -33,18 +33,23 @@
         },
 
         log: function() {
-            var html = ''
-            Array.prototype.forEach.call(arguments, function(text) {
-                html += text + ', '
+            var html = '',
+                length = arguments.length
+            Array.prototype.forEach.call(arguments, function(text, index) {
+                html += text
+                if (index != length - 1) html += ', '
             })
             document.getElementById('console').innerHTML += html + '\n'
         },
 
         alert: function() {
-            var html = ''
+            var html = '',
+                length = arguments.length
+
             html += '<span style="color: red">'
-            Array.prototype.forEach.call(arguments, function(text) {
-                html += text + ';'
+            Array.prototype.forEach.call(arguments, function(text, index) {
+                html += text
+                if (index != length - 1) html += ', '
             })
             html += '</span>'
             document.getElementById('console').innerHTML += html + '\n'
