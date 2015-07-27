@@ -17,9 +17,11 @@ var jsonp = function(url, args) {
         value;
     
     for (var key in args) {
-        value = encodeURIComponent(args[key]);
-        url += first ? ('?' + key + '=' + value) : ('&' + key + '=' + value);
-        first = false;
+        if (args.hasOwnProperty(key)) {
+            value = encodeURIComponent(args[key]);
+            url += first ? ('?' + key + '=' + value) : ('&' + key + '=' + value);
+            first = false;
+        }
     }
     script.src= url;
     head.appendChild(script);
