@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Test for jerry analytics</title>
+</head>
+<body>
+
+<pre id="console"></pre>
+
+<script>
+    // helper functions
+    var $ = {
+        loadScript: function(url) {
+            var script = document.createElement("script")
+            script.src= url
+            document.head.appendChild(script)
+        },
+
+        jsonp: function(url, args) {
+            var value,
+                first = true
+
+            for (var key in args) {
+                if (args.hasOwnProperty(key)) {
+                    value = encodeURIComponent(args[key])
+                    url += first ? ('?' + key + '=' + value) : ('&' + key + '=' + value)
+                    first = false
+                }
+            }
+
+            $.loadScript(url)
+        },
+
+        log: function() {
+            var html = ''
+            Array.prototype.forEach.call(arguments, function(text) {
+                html += text + ', '
+            })
+            document.getElementById('console').innerHTML += html + '\n'
+        },
+
+        alert: function() {
+            var html = ''
+            html += '<span style="color: red">'
+            Array.prototype.forEach.call(arguments, function(text) {
+                html += text + ';'
+            })
+            html += '</span>'
+            document.getElementById('console').innerHTML += html + '\n'
+        }
+    }
+
+    var host = location.host
+    if (!host.match(/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/) && !host.match(/localhost:\d{1,5}/)) {
+        $.log('Please start a local server to test jerry-analytics.')
+    } else {
+        $.log('Test Begin!')
+        scripts = ['page.js']
+        scripts.forEach(function(url) {
+            $.loadScript(url)
+        })
+    }
+</script>
+</body>
+</html>
