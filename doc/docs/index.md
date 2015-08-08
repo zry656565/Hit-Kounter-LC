@@ -106,7 +106,7 @@ function func(result) {
 
 ## API
 
-###1. `page.php?type=increment`
+##1. increment
 
 When someone visit your website, increase the count of a visited page.
 
@@ -116,6 +116,12 @@ When someone visit your website, increase the count of a visited page.
 | callback | jsonp_callback | The callback will be called when the jsonp request returns. |
 | domain | http://a.com | domain of your site |
 | url | http://a.com/page/ | url of current page |
+
+####API
+
+```
+page.php?type=increment
+```
 
 ####Request Sample
 
@@ -134,7 +140,7 @@ jsonp_callback({
 });
 ```
 
-###2. `page.php?type=get`
+##2. get
 
 Get the count of several pages.
 
@@ -143,6 +149,13 @@ Get the count of several pages.
 | type | get | - |
 | callback | jsonp_callback | The callback will be called when the jsonp request returns. |
 | pages | (see the [sample below](#2-get-the-count-of-several-pages)) | an array contains the domains and urls of several pages |
+
+
+####API
+
+```
+page.php?type=get
+```
 
 ####Request Sample
 
@@ -170,7 +183,7 @@ jsonp_callback([
 ]);
 ```
 
-###3. `page.php?type=getTop`
+##3. getTop
 
 Get the pages which have been mostly visited.
 
@@ -180,6 +193,12 @@ Get the pages which have been mostly visited.
 | callback | jsonp_callback | The callback will be called when the jsonp request returns. |
 | domain | http://a.com | domain of your site |
 | number | 5 | get top 5 pages  |
+
+####API
+
+```
+page.php?type=getTop
+```
 
 ####Request Sample
 
@@ -215,7 +234,7 @@ jsonp_callback([
 ]);
 ```
 
-###4. `page.php?type=getByDomain`
+##4. getByDomain
 
 Get all pages under the given domain.
 
@@ -224,6 +243,12 @@ Get all pages under the given domain.
 | type | getByDomain | - |
 | callback | jsonp_callback | The callback will be called when the jsonp request returns. |
 | domain | http://a.com | domain of your site |
+
+####API
+
+```
+page.php?type=getByDomain
+```
 
 ####Request Sample
 
