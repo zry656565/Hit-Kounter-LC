@@ -110,12 +110,13 @@ function func(result) {
 
 When someone visit your website, increase the count of a visited page.
 
-| Argument | Value | Explanation |
-| ------ | --- | --- |
-| type | increment | - |
-| callback | jsonp_callback | The callback will be called when the jsonp request returns. |
-| domain | http://a.com | domain of your site |
-| url | http://a.com/page/ | url of current page |
+| Argument | Value | Requirement | Description |
+| ------ | --- | --- | --- |
+| type | increment | Required | - |
+| callback | jsonp_callback | Required | The callback will be called when the jsonp request returns. |
+| domain | http://a.com | Required | domain of your site |
+| url | http://a.com/page/ | Required | url of current page |
+| title | Hello, Everyone | Required | page title |
 
 ####API
 
@@ -144,11 +145,11 @@ jsonp_callback({
 
 Get the count of several pages.
 
-| Argument | Value | Explanation |
-| ------ | --- | --- |
-| type | get | - |
-| callback | jsonp_callback | The callback will be called when the jsonp request returns. |
-| pages | (see the [sample below](#2-get-the-count-of-several-pages)) | an array contains the domains and urls of several pages |
+| Argument | Value | Requirement | Description |
+| ------ | --- | --- | --- |
+| type | get | Required | - |
+| callback | jsonp_callback | Required |  The callback will be called when the jsonp request returns. |
+| pages | (see the [sample below](#2-get-the-count-of-several-pages)) | Required | an array contains the domains and urls of several pages |
 
 
 ####API
@@ -187,12 +188,12 @@ jsonp_callback([
 
 Get the pages which have been mostly visited.
 
-| Argument | Value | Explanation |
-| ------ | --- | --- |
-| type | getTop | - |
-| callback | jsonp_callback | The callback will be called when the jsonp request returns. |
-| domain | http://a.com | domain of your site |
-| number | 5 | get top 5 pages  |
+| Argument | Value | Requirement | Description |
+| ------ | --- | --- | --- |
+| type | getTop | Required | - |
+| callback | jsonp_callback | Required | The callback will be called when the jsonp request returns. |
+| domain | http://a.com | Required | domain of your site |
+| number | 5 | Required | get top 5 pages  |
 
 ####API
 
@@ -238,11 +239,11 @@ jsonp_callback([
 
 Get all pages under the given domain.
 
-| Argument | Value | Explanation |
-| ------ | --- | --- |
-| type | getByDomain | - |
-| callback | jsonp_callback | The callback will be called when the jsonp request returns. |
-| domain | http://a.com | domain of your site |
+| Argument | Value | Requirement | Description |
+| ------ | --- | --- | --- |
+| type | getByDomain | Required | - |
+| callback | jsonp_callback | Required | The callback will be called when the jsonp request returns. |
+| domain | http://a.com | Required | domain of your site |
 
 ####API
 
