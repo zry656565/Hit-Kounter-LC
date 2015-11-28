@@ -48,4 +48,35 @@ class DatabaseHelper
         return $this->queryAll($table, $columns, $options);
     }
 
+    public function update($table, $setValues, $wheres) {
+        $sql = "UPDATE {$table} SET ";
+        $setStr = "";
+        foreach ($setValues as $col => $val) {
+            $setStr = " `{$col}` = :{$col}, ";
+        }
+        $setStr = substr($setStr, 0, strlen($setStr) - 2);
+        $where = " WHERE 1 ";
+        foreach ($wheres as $col => $val) {
+            $where .= " AND `{$col}` = :{$col} ";
+        }
+        $sql .= $setStr . $where;
+
+        $prepareStatement = $this->db->prepare($sql);
+        return $prepareStatement->execute(array_merge($setValues, $wheres))
+            or die(print_r($prepareStatement->errorInfo(), true));
+    }
+
+    public function insert($table, $columns) {
+        $sql = "INSERT INTO {$table} (" . join(',', array_keys($columns)) . ")";
+        $values = "";
+        foreach ($columns as $col => $val) {
+            $values .= " :{$col}, ";
+        }
+        $values = substr($values, 0, strlen($values) - 2);
+        $sql .= " VALUES (" . $values . ")";
+
+        $prepareStatement = $this->db->prepare($sql);
+        return $prepareStatement->execute($columns) or die(print_r($prepareStatement->errorInfo(), true));
+    }
+
 }

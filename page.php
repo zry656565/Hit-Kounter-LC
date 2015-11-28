@@ -33,26 +33,20 @@ function parse() {
 
         // increase the count of a visited page
         case 'increment':
-            $sql = $db->prepare("SELECT * FROM page WHERE url = :url AND `domain` = :domain");
-            $sql->execute([
-                ':url' => $_GET['url'],
-                ':domain' => $_GET['domain'],
-            ]) or die(print_r($sql->errorInfo(), true));
-            if ($sql->rowCount()) {
-                $row = $sql->fetch(PDO::FETCH_ASSOC);
+            $row = $dbHelper->query('page', [
+                'url' => $_GET['url'],
+                'domain' => $_GET['domain'],
+            ]);
+            if (isset($row)) {
                 $count = ++$row['count'];
-                $sql = $db->prepare("UPDATE page SET `count` = :count WHERE id = :id");
-                $sql->execute([
-                    ':count' => $count,
-                    ':id' => $row['id'],
-                ]) or die(print_r($sql->errorInfo(), true));
+                $dbHelper->update('page', [ 'count' => $count ], [ 'id' => $row['id'] ]);
             } else {
-                $sql = $db->prepare("INSERT INTO page (url, `domain`, title, `count`) VALUES (:url, :domain, :title, 1)");
-                $sql->execute([
-                    ':url' => $_GET['url'],
-                    ':domain' => $_GET['domain'],
-                    ':title' => $_GET['title'],
-                ]) or die(print_r($sql->errorInfo(), true));
+                $dbHelper->insert('page', [
+                    'url' => $_GET['url'],
+                    'domain' => $_GET['domain'],
+                    'title' => $_GET['title'],
+                    'count' => 1
+                ]);
                 $row = [
                     'url' => $_GET['url'],
                     'domain' => $_GET['domain'],
