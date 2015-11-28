@@ -2,7 +2,6 @@
 require_once('help/DatabaseHelper.php');
 
 function parse() {
-    $db = dbConnection(); // todo
     $dbHelper = new DatabaseHelper();
 
     switch($_GET['type']) {

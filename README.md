@@ -1,5 +1,5 @@
-# Jerry Analytics
-Jerry Analytics is a simple data collector for visit statistics.
+# Hit Kounter
+Hit Kounter is a simple blog-aware page hit counter.
 
 - [Prepare: JSONP Module](#prepare-jsonp-module)
 - [Usage Sample](#usage-sample)
