@@ -1,1 +1,0 @@
-Here is the docs made by [mkdocs](http://www.mkdocs.org/).
