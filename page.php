@@ -14,15 +14,15 @@ function parse() {
             }
             foreach ($pages as $index => $page) {
                 if (isset($page->url) && isset($page->domain)) {
-                    $result = $dbHelper->query('page', [
+                    $row = $dbHelper->query('page', [
                         'url' => $page->url,
                         'domain' => $page->domain,
                     ]);
-                    if (is_null($result)) {
+                    if (is_null($row)) {
                         $page->count = 0;
                     } else {
-                        $page->title = $result['title'];
-                        $page->count = intval($result['count']);
+                        $page->title = $row['title'];
+                        $page->count = intval($row['count']);
                     }
                 } else {
                     unset($pages[$index]);
@@ -36,6 +36,7 @@ function parse() {
                 'url' => $_GET['url'],
                 'domain' => $_GET['domain'],
             ]);
+            $count = 1;
             if (isset($row)) {
                 $count = ++$row['count'];
                 $dbHelper->update('page', [ 'count' => $count ], [ 'id' => $row['id'] ]);
@@ -46,15 +47,13 @@ function parse() {
                     'title' => $_GET['title'],
                     'count' => 1
                 ]);
-                $row = [
-                    'url' => $_GET['url'],
-                    'domain' => $_GET['domain'],
-                    'title' => $_GET['title'],
-                    'count' => 1,
-                ];
             }
-            unset($row['id']);
-            return json_encode($row);
+            return json_encode([
+                'url' => $_GET['url'],
+                'domain' => $_GET['domain'],
+                'title' => $_GET['title'],
+                'count' => $count,
+            ]);
 
         // get the pages which have been mostly visited
         case 'getTop':
