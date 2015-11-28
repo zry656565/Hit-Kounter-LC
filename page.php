@@ -22,8 +22,8 @@ function parse() {
                     if (is_null($result)) {
                         $page->count = 0;
                     } else {
-                        $page->title = $result->title;
-                        $page->count = intval($result->count);
+                        $page->title = $result['title'];
+                        $page->count = intval($result['count']);
                     }
                 } else {
                     unset($pages[$index]);

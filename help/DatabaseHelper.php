@@ -23,29 +23,18 @@ class DatabaseHelper
             $where .= " AND `{$col}` = :{$col} ";
         }
         $sql .= $where;
-        if (isset($options['orderBy'])) {
-            $sql .= " ORDER BY `{$options['orderBy']}` ";
-        }
-        if ($options['count'] != -1) {
-            $sql .= " LIMIT {$options['count']} ";
-        }
+        if (isset($options['orderBy'])) $sql .= " ORDER BY `{$options['orderBy']}` DESC ";
+        if ($options['count'] != -1) $sql .= " LIMIT {$options['count']} ";
 
         $prepareStatement = $this->db->prepare($sql);
-        if ($options['count'] == 1) {
-            $prepareStatement->execute($columns) or die(print_r($prepareStatement->errorInfo(), true));
-            if ($prepareStatement->rowCount()) {
-                $row = $prepareStatement->fetch(PDO::FETCH_ASSOC);
-                return $row;
-            }
-        } else {
-            $prepareStatement->execute($columns) or die(print_r($prepareStatement->errorInfo(), true));
-            return $prepareStatement->fetchAll();
-        }
-        return null;
+        $prepareStatement->execute($columns) or die(print_r($prepareStatement->errorInfo(), true));
+        return $prepareStatement->fetchAll();
     }
 
     public function query($table, $columns, $options = [ 'count' => 1 ]) {
-        return $this->queryAll($table, $columns, $options);
+        $result = $this->queryAll($table, $columns, $options);
+        if (count($result)) return $result[0];
+        return null;
     }
 
     public function update($table, $setValues, $wheres) {
