@@ -26,6 +26,7 @@ let Pheonix = {
     switch(options.api) {
       case 'hk.page.increment':
         options.url = options.url || location.href
+        options.title = options.title || document.title
         break
       case 'hk.page.get':
         options.pages = options.pages || [{ url: location.href, title: document.title }]

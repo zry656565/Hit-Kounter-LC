@@ -18,14 +18,15 @@ class Auroth {
         $version = $_GET['v'];
         load($api);
 
-        $api = str_replace('.', '_', $api);
-        $handler = new $api();
+        $apiClass = str_replace('.', '_', $api);
+        $handler = new $apiClass();
         $results = $handler->exec($version, $_GET);
         $this->callback(0, $results);
     }
 
     function callback($code, $results) {
         $results = json_encode($results);
+        header('Content-Type: application/javascript');
         echo("{$_GET['callback']}($code, $results)");
     }
 }
