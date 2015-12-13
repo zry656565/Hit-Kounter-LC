@@ -1,2 +1,5 @@
 # PhpStorm Configuration
 .idea
+
+# node
+node_modules
