@@ -8,7 +8,7 @@
 let Pheonix = {
 
   SERVER: 'http://localhost',
-  ACCEPTOR: '/auroth.php',
+  ACCEPTOR: '/handler.php',
   id: 0,
   callbacks: {},
 
@@ -25,8 +25,11 @@ let Pheonix = {
     if (options.api.match(/hk\.page/)) options.domain = location.host
     switch(options.api) {
       case 'hk.page.increment':
-      case 'hk.page.get':
         options.url = options.url || location.href
+        break
+      case 'hk.page.get':
+        options.pages = options.pages || [{ url: location.href, title: document.title }]
+        options.pages = JSON.stringify(options.pages)
         break
     }
     let callbackName = 'c' + this.id++
@@ -45,7 +48,7 @@ let Pheonix = {
       , value
 
     for (let key in args) {
-      if (args.hasOwnProperty(key)) {
+      if (args.hasOwnProperty(key) && typeof args[key] != 'function') {
         value = encodeURIComponent(args[key])
         url += first ? ('?' + key + '=' + value) : ('&' + key + '=' + value)
         first = false
