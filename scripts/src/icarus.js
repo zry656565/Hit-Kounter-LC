@@ -5,11 +5,11 @@
 
 'use strict'
 
-let Pheonix = {
+let Icarus = {
 
-  SERVER: 'http://localhost',
+  SERVER: 'http://localhost:8080',
   ACCEPTOR: '/handler.php',
-  id: 0,
+  uid: 0,
   callbacks: {},
 
   request(options = { api: '' }) {
@@ -22,6 +22,7 @@ let Pheonix = {
         message: 'Please set the api name.'
       })
     }
+    // add param `domain` for all APIs like `hk.page.*`
     if (options.api.match(/hk\.page/)) options.domain = location.host
     switch(options.api) {
       case 'hk.page.increment':
@@ -33,16 +34,16 @@ let Pheonix = {
         options.pages = JSON.stringify(options.pages)
         break
     }
-    let callbackName = 'c' + this.id++
+    let callbackName = 'c' + this.uid++
     callbacks[callbackName] = function(code, result) {
       if (code == 0) { options.success(result) }
       else { options.failure(code, result) }
     }
-    options.callback = 'Pheonix.callbacks.' + callbackName
+    options.callback = 'Icarus.callbacks.' + callbackName
     jsonp(SERVER + ACCEPTOR, options)
   },
 
-  jsonp(url, args) {
+  jsonp(url, args = {}) {
     let head = document.head
       , script = document.createElement("script")
       , first = true
@@ -60,5 +61,5 @@ let Pheonix = {
   }
 }
 
-window.Pheonix = Pheonix
-export default Pheonix
+window.Icarus = Icarus
+export default Icarus
