@@ -12,7 +12,7 @@ class API {
     }
 
     function exec($version, $options) {
-        $version = 'v' . str_replace('.', '_', $version);
-        return $this->$version($options);
+        $method = 'v' . str_replace('.', '_', $version);
+        return $this->$method($options);
     }
 }
