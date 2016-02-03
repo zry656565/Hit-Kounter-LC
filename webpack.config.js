@@ -1,7 +1,10 @@
 module.exports = {
-  entry: './src/index.js',
+  entry: {
+    'hit-kounter': './scripts/src/index.js'
+  },
   output: {
-    filename: './dst/hit-kounter.js'
+    path: './scripts/dst',
+    filename: '[name].js'
   },
   module: {
     loaders: [
