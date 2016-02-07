@@ -15,6 +15,14 @@ module.exports = {
         query: {
           presets: ['es2015']
         }
+      },
+      {
+        test: /\.less$/,
+        loader: 'style!css!less'
+      },
+      {
+        test: /\.jade$/,
+        loader: 'jade'
       }
     ]
   },

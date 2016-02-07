@@ -7,6 +7,12 @@
 
 import Icarus from './icarus.js'
 
+require('../../styles/index.less')
+
+let TEMPLATES= {
+  TOP_AREA: require('../../templates/top-area.jade')
+}
+
 let HitKounter = {
   elements: {},
   scan() {
@@ -65,7 +71,24 @@ let HitKounter = {
     })
   },
   getTop() {
+    let {elements} = this
+    let topNum = elements.topArea[0].attributes['data-hk-top-pages'].value
 
+    Icarus.request({
+      api: 'hk.page.getTop',
+      v: '1.0',
+      num: topNum,
+      success(results) {
+        let topAreaDom = TEMPLATES.TOP_AREA({
+          pages: results,
+          num: topNum
+        })
+        for (let i = 0; i < elements.topArea.length; ++i) {
+          elements.topArea[i].innerHTML = topAreaDom
+        }
+      },
+      failure(code, err) { console.log(code, err) }
+    })
   }
 }
 

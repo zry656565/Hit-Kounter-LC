@@ -1,0 +1,7 @@
+h3.hit-kounter-top-title 本站访问量 Top #{num}
+table.hit-kounter-top-table
+    each page in pages
+        tr
+            td
+                a(href=page.url) #{page.title}
+            td= page.count
