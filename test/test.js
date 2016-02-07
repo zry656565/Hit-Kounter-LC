@@ -22,11 +22,11 @@ describe('Icarus', function() {
       Icarus.request({
         api: 'hk.page.increment',
         v: '1.0',
-        success(result) {
+        success: function(result) {
           expect(result.count).to.equal(1)
           done()
         },
-        failure(code, err) {}
+        failure: function(code, err) { console.log(code, err) }
       })
     })
 
@@ -34,11 +34,55 @@ describe('Icarus', function() {
       Icarus.request({
         api: 'hk.page.increment',
         v: '1.0',
-        success(result) {
+        success: function(result) {
           expect(result.count).to.equal(2)
           done()
         },
-        failure(code, err) {}
+        failure: function(code, err) { console.log(code, err) }
+      })
+    })
+  })
+
+  describe('hk.page.get', function() {
+    it('get current page', function(done) {
+      Icarus.request({
+        api: 'hk.page.get',
+        v: '1.0',
+        success: function(result) {
+          expect(result[0].count).to.equal(2)
+          done()
+        },
+        failure: function(code, err) { console.log(code, err) }
+      })
+    })
+  })
+
+  describe('hk.page.getTop', function() {
+    it('get top 1', function(done) {
+      Icarus.request({
+        api: 'hk.page.getTop',
+        v: '1.0',
+        num: 1,
+        success: function(result) {
+          expect(result[0].count).to.equal(2)
+          done()
+        },
+        failure: function(code, err) { console.log(code, err) }
+      })
+    })
+  })
+
+  describe('hk.page.getByDomain', function() {
+    it('default', function(done) {
+      Icarus.request({
+        api: 'hk.page.getByDomain',
+        v: '1.0',
+        num: 1,
+        success: function(result) {
+          expect(result[0].count).to.equal(2)
+          done()
+        },
+        failure: function(code, err) { console.log(code, err) }
       })
     })
   })

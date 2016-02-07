@@ -49,12 +49,12 @@ Icarus.request({
 ### hk.page.get
 
 Get the count of several pages.
-If no parameter is passed, Icarus will request with the title and url of current page by default.
+If no parameter is passed, Icarus will request with the url of current page by default.
 
 | Parameter | Requirement | Description |
 | ------ | --- | --- |
 | domain | optional | domain of your site |
-| pages | optional | an array contains the titles and urls of several pages |
+| pages | optional | an array contains the urls of several pages |
 
 
 #### Usage Sample
@@ -65,7 +65,6 @@ Icarus.request({
   v: '1.0',
   pages: [
     { url: 'http://test.com' },
-    { title: 'Test Page' }
   ],
   success(result) {
     for (var i = 0; i < result.length; i++) {
