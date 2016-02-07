@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo for Hit Kounter</title>
+    <style>
+        [data-hk-top-pages] {
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+
+    <p>Current page: <span data-hk-page="current">{% current %}</span></p>
+
+    <p>Counting of http://127.0.0.1/:8080/demo/: <span data-hk-page="http://127.0.0.1:8080/demo/">{% counter %}</span></p>
+
+    <div data-hk-top-pages="5">{% hit kounter top pages area %}</div>
+
+<script src="../scripts/dst/hit-kounter.js"></script>
+</body>
+</html>
