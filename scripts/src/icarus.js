@@ -17,7 +17,7 @@ let Icarus = {
     options.success = options.success || function(){}
     options.failure = options.failure || function(){}
     if (!options.api) {
-      options.failure({
+      options.failure(400, {
         code: 400,
         message: 'Please set the api name.'
       })
@@ -55,6 +55,13 @@ let Icarus = {
         url += first ? ('?' + key + '=' + value) : ('&' + key + '=' + value)
         first = false
       }
+    }
+    if (url.length > 1024) {
+      options.failure(401, {
+        code: 401,
+        message: 'The length of request is too long (>1024) to be handled with.'
+      })
+      return
     }
     script.src= url
     head.appendChild(script)
