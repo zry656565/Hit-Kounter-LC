@@ -24,13 +24,14 @@ let Icarus = {
     }
     // add param `domain` for all APIs like `hk.page.*`
     if (options.api.match(/hk\.page/)) options.domain = location.host
+    let urlWithoutHash = location.href.replace(/#.*$/, '')
     switch(options.api) {
       case 'hk.page.increment':
-        options.url = options.url || location.href
+        options.url = urlWithoutHash
         options.title = options.title || document.title
         break
       case 'hk.page.get':
-        options.pages = options.pages || [{ url: location.href, title: document.title }]
+        options.pages = options.pages || [{ url: urlWithoutHash, title: document.title }]
         options.pages = JSON.stringify(options.pages)
         break
     }

@@ -13,12 +13,10 @@ Hit Kounter is a simple blog-aware page hit counter.
 ### hk.page.increment
 
 When someone visit your website, increase the count of a visited page.
-If no parameter is passed, Icarus will request with the title and url of current page by default.
+If no parameter is passed, Icarus will request with the title of current page by default.
 
 | Parameter | Requirement | Description |
 | ------ | --- | --- |
-| domain | optional | domain of your site |
-| url    | optional | url of current page |
 | title  | optional | page title |
 
 #### Usage Sample
