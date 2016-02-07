@@ -5,15 +5,18 @@
 
 'use strict'
 
+import utils from './utils.js'
+
 let Icarus = {
 
-  SERVER: 'http://localhost:8080',
+  LOCAL_SERVER: 'http://localhost:8080',
+  SAE_SERVER: 'http://hitk.applinzi.com',
   ACCEPTOR: '/handler.php',
   uid: 0,
   callbacks: {},
 
   request(options = { api: '' }) {
-    let {SERVER, ACCEPTOR, callbacks, jsonp} = this
+    let {LOCAL_SERVER, SAE_SERVER, ACCEPTOR, callbacks, jsonp} = this
     options.success = options.success || function(){}
     options.failure = options.failure || function(){}
     if (!options.api) {
@@ -24,7 +27,7 @@ let Icarus = {
     }
     // add param `domain` for all APIs like `hk.page.*`
     if (options.api.match(/hk\.page/)) options.domain = location.host
-    let urlWithoutHash = location.href.replace(/#.*$/, '')
+    let urlWithoutHash = location.href.replace(/#.*$/, '').replace(/\?.*$/, '')
     switch(options.api) {
       case 'hk.page.increment':
         options.url = urlWithoutHash
@@ -41,7 +44,8 @@ let Icarus = {
       else { options.failure(code, result) }
     }
     options.callback = 'Icarus.callbacks.' + callbackName
-    jsonp(SERVER + ACCEPTOR, options)
+    let server = utils.urlParams['env'] == 'local' ? LOCAL_SERVER : SAE_SERVER
+    jsonp(server + ACCEPTOR, options)
   },
 
   jsonp(url, args = {}) {
