@@ -26,10 +26,10 @@ Icarus.request({
   api: 'hk.page.increment',
   v: '1.0',
   title: 'Test Page', // optional
-  success(result) {
+  success: function(result) {
     console.log(result.domain, result.url, result.count);
   },
-  failure(code, err) {
+  failure: function(code, err) {
     console.log(code, err);
   }
 });
@@ -66,12 +66,12 @@ Icarus.request({
   pages: [
     { url: 'http://test.com' },
   ],
-  success(result) {
+  success: function(result) {
     for (var i = 0; i < result.length; i++) {
       console.log(result.domain, result.url, result.count);
     }
   },
-  failure(code, err) {
+  failure: function(code, err) {
     console.log(code, err);
   }
 });
@@ -112,12 +112,12 @@ Icarus.request({
   api: 'hk.page.getTop',
   v: '1.0',
   num: 5,
-  success(result) {
+  success: function(result) {
     for (var i = 0; i < result.length; i++) {
       console.log(result.domain, result.url, result.count);
     }
   },
-  failure(code, err) {
+  failure: function(code, err) {
     console.log(code, err);
   }
 });
@@ -165,12 +165,12 @@ Get all pages under the given domain.
 Icarus.request({
   api: 'hk.page.getByDomain',
   v: '1.0',
-  success(result) {
+  success: function(result) {
     for (var i = 0; i < result.length; i++) {
       console.log(result.domain, result.url, result.count);
     }
   },
-  failure(code, err) {
+  failure: function(code, err) {
     console.log(code, err);
   }
 });
