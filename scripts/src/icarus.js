@@ -30,7 +30,7 @@ let Icarus = {
     let urlWithoutHash = location.href.replace(/#.*$/, '').replace(/\?.*$/, '')
     switch(options.api) {
       case 'hk.page.increment':
-        options.url = urlWithoutHash
+        options.url = options.url || urlWithoutHash
         options.title = options.title || document.title
         break
       case 'hk.page.get':
