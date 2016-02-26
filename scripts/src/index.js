@@ -105,7 +105,7 @@ window.onload = function() {
 
   hk.scan()
   hk.increment()
-  if (e.pages.size > e.current.length) hk.getPages()
+  if (e.pages.size > 0) hk.getPages()
   if (e.topArea.length) hk.getTop()
 }
 
