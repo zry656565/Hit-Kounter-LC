@@ -31,10 +31,6 @@ let HitKounter = {
       if (arr) { arr.push(pages[i]) }
       else { e.pages.set(url, [pages[i]]) }
     }
-
-    if (e.current.length) this.increment()
-    if (pages.length > e.current.length) this.getPages()
-    if (e.topArea.length) this.getTop()
   },
   increment() {
     let {elements} = this
@@ -94,7 +90,15 @@ let HitKounter = {
   }
 }
 
-window.onload = HitKounter.scan.bind(HitKounter)
+window.onload = function() {
+  var hk = HitKounter
+    , e = hk.elements
+
+  hk.scan()
+  hk.increment()
+  if (e.pages.size > e.current.length) hk.getPages()
+  if (e.topArea.length) hk.getTop()
+}
 
 window.HitKounter = HitKounter
 export default HitKounter
