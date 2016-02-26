@@ -48,25 +48,34 @@ let HitKounter = {
   getPages() {
     let {elements} = this
     let pagesParam = []
+    const LIMITATION = 800   // prevent length of request from being greater than 1024
 
     for (let iter = elements.pages.keys(), state = iter.next(); !state.done; state = iter.next()) {
       pagesParam.push({ url: state.value })
+      if ( encodeURIComponent(JSON.stringify(pagesParam)).length > LIMITATION ) {
+        getPartialPages(pagesParam)
+        pagesParam = []
+      }
     }
 
-    Icarus.request({
-      api: 'hk.page.get',
-      v: '1.0',
-      pages: pagesParam,
-      success(results) {
-        for (let i = 0; i < results.length; ++i) {
-          let arr = elements.pages.get(results[i].url)
-          for (let j = 0; j < arr.length; ++j) {
-            arr[j].innerText = results[i].count
+    if (pagesParam.length > 0) getPartialPages(pagesParam)
+
+    function getPartialPages(pages) {
+      Icarus.request({
+        api: 'hk.page.get',
+        v: '1.0',
+        pages: pages,
+        success(results) {
+          for (let i = 0; i < results.length; ++i) {
+            let arr = elements.pages.get(results[i].url)
+            for (let j = 0; j < arr.length; ++j) {
+              arr[j].innerText = results[i].count
+            }
           }
-        }
-      },
-      failure(code, err) { console.log(code, err) }
-    })
+        },
+        failure(code, err) { console.log(code, err) }
+      })
+    }
   },
   getTop() {
     let {elements} = this
