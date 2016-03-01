@@ -1,5 +1,5 @@
 /** @preserve
- * Hit Kounter Help script v0.1
+ * Hit Kounter Help script v0.1.1
  * Home: https://github.com/zry656565/Hit-Kounter
  * Author: Jerry Zou
  * Email: jerry.zry@outlook.com
@@ -8,6 +8,7 @@
 'use strict'
 
 import Icarus from './icarus.js'
+import DOMReady from './ready.js'
 
 require('../../styles/index.less')
 
@@ -99,7 +100,7 @@ let HitKounter = {
   }
 }
 
-window.onload = function() {
+DOMReady(function() {
   var hk = HitKounter
     , e = hk.elements
 
@@ -107,7 +108,7 @@ window.onload = function() {
   hk.increment()
   if (e.pages.size > 0) hk.getPages()
   if (e.topArea.length) hk.getTop()
-}
+})
 
 window.HitKounter = HitKounter
 export default HitKounter
