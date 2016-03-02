@@ -26,7 +26,7 @@ let Icarus = {
       })
     }
     // add param `domain` for all APIs like `hk.page.*`
-    if (options.api.match(/hk\.page/)) options.domain = location.origin
+    if (options.api.match(/hk\.page/)) options.domain = location.origin || `${location.protocol}//${location.host}`
     let urlWithoutHash = location.href.replace(/#.*$/, '').replace(/\?.*$/, '')
     switch(options.api) {
       case 'hk.page.increment':
