@@ -1,5 +1,5 @@
 /** @preserve
- * Hit Kounter Help script v0.1.1
+ * Hit Kounter Help script v0.2.0
  * Home: https://github.com/zry656565/Hit-Kounter
  * Author: Jerry Zou
  * Email: jerry.zry@outlook.com
@@ -10,10 +10,10 @@
 import Icarus from './icarus.js'
 import DOMReady from './ready.js'
 
-require('../../styles/index.less')
+require('../styles/index.less')
 
 let TEMPLATES= {
-  TOP_AREA: require('../../templates/top-area.jade')
+  TOP_AREA: require('../templates/top-area.jade')
 }
 
 let HitKounter = {

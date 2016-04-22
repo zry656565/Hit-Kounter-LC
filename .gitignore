@@ -5,4 +5,4 @@
 node_modules
 
 # built scripts
-scripts/dst
+build
