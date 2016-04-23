@@ -1,6 +1,6 @@
 module.exports = {
   entry: {
-    'hit-kounter': './scripts/index.js'
+    'hit-kounter-lc': './scripts/index.js'
   },
   output: {
     path: './build',
