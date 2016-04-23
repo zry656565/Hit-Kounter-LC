@@ -8,7 +8,7 @@
 'use strict'
 
 import Icarus from './icarus.js'
-import DOMReady from './ready.js'
+import DOMReady from './help/ready.js'
 
 require('../styles/index.less')
 

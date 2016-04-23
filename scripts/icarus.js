@@ -5,7 +5,7 @@
 
 'use strict'
 
-import utils from './utils.js'
+import Storage from './help/storage.js'
 
 let Icarus = {
 
@@ -51,11 +51,7 @@ let Icarus = {
         data.pages[i].count = 0
       }
 
-      pageQ.equalTo('domain', domain)
-      pageQ.find().try(function(results) {
-        results = results.map(function(val) {
-          return val.attributes
-        })
+      let handleGetRequest = function(results) {
         switch(options.api) {
           case 'hk.page.get':
             let hashMap = new Map()
@@ -81,7 +77,22 @@ let Icarus = {
             invalidAPI()
             break
         }
-      }).catch(onerror)
+      }
+
+      let cachePages = Storage.get('Icarus.pages');
+      if (cachePages) {
+        handleGetRequest(cachePages)
+      } else {
+        pageQ.equalTo('domain', domain)
+        pageQ.find().then(function(results) {
+          results = results.map(function(val) {
+            return val.attributes
+          })
+
+          Storage.set('Icarus.pages', results)
+          handleGetRequest(results)
+        }, onerror)
+      }
 
     } else {
       switch(options.api) {
