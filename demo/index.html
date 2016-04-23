@@ -15,10 +15,17 @@
 
     <p>Current page: <span data-hk-page="current">{% current %}</span></p>
 
-    <p>Counting of http://127.0.0.1/:8080/demo/: <span data-hk-page="http://127.0.0.1:8080/demo/">{% counter %}</span></p>
+    <p>Counting of http://localhost:63342/Hit-Kounter/demo/index.html:
+        <span data-hk-page="http://localhost:63342/Hit-Kounter/demo/index.html">{% counter %}</span>
+    </p>
+
+    <p>Counting of http://localhost:63342/Hit-Kounter/demo/index2.html:
+        <span data-hk-page="http://localhost:63342/Hit-Kounter/demo/index2.html">{% counter %}</span>
+    </p>
 
     <div data-hk-top-pages="5">{% hit kounter top pages area %}</div>
 
+<script src="https://cdn1.lncld.net/static/js/av-mini-0.6.10.js"></script>
 <script src="../build/hit-kounter.js"></script>
 </body>
 </html>
