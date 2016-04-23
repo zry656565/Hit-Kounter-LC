@@ -3,18 +3,19 @@
  * Email: jerry.zry@outlook.com
  */
 
-var expect = chai.expect
-  , clearDone;
+var expect = chai.expect;
 
 describe('Icarus', function() {
 
-  this.timeout(500)
+  this.timeout(1000)
 
   before(function(done) {
-    Icarus.jsonp('/test/clear.php?current=' + encodeURIComponent(location.host)
-        + '&t=' + Date.now() + '|' + Math.floor(Math.random() * 10000)
-        + '&callback=clearDone')
-    clearDone = done
+    Icarus.clearLocalhost(function() {
+      localStorage.clear();
+      done();
+    }, function() {
+      console.error('clear localhost error!')
+    })
   })
 
   describe('hk.page.increment', function() {

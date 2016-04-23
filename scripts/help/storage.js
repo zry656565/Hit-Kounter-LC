@@ -3,10 +3,15 @@
  * Email: jerry.zry@outlook.com
  */
 
+import utils from './utils'
+
 let Storage = {
   EXPIRE_TIME: 300,  // 5 minutes
 
-  isSupported: !!localStorage,
+  isSupported: (function() {
+    if (utils.urlParams['storage'] === 'false') return false
+    return !!localStorage
+  }()),
 
   has(key) {
     if (!this.isSupported) return false

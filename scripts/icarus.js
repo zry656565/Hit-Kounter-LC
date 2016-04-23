@@ -122,7 +122,19 @@ let Icarus = {
 
           }).try(function(page) {
 
-            success(page.attributes)
+            page = page.attributes
+            let cachePages = Storage.get('Icarus.pages')
+            if (cachePages) {
+              for (var i = 0, n = cachePages.length; i < n; i++) {
+                if (cachePages[i].url === page.url) {
+                  cachePages[i].count = page.count
+                  break
+                }
+              }
+              if (i === n) cachePages.push(page)
+              Storage.set('Icarus.pages', cachePages)
+            }
+            success(page)
 
           }).catch(onerror)
           break
@@ -131,6 +143,20 @@ let Icarus = {
           break
       }
     }
+  },
+
+  clearLocalhost(success, error) {
+    let {APP_ID, APP_KEY} = this
+    AV.initialize(APP_ID, APP_KEY)
+
+    let Page = AV.Object.extend('Page')
+      , pageQ = new AV.Query('Page')
+
+    pageQ.startsWith('domain', 'http://localhost')
+    pageQ.destroyAll().then(function() {
+      console.log('Clear localhost DONE.')
+      success()
+    }, error)
   }
 }
 
