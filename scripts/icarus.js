@@ -149,14 +149,35 @@ let Icarus = {
     let {APP_ID, APP_KEY} = this
     AV.initialize(APP_ID, APP_KEY)
 
-    let Page = AV.Object.extend('Page')
-      , pageQ = new AV.Query('Page')
+    let pageQ = new AV.Query('Page')
 
     pageQ.startsWith('domain', 'http://localhost')
     pageQ.destroyAll().then(function() {
       console.log('Clear localhost DONE.')
       success()
     }, error)
+  },
+
+  importData(domain, data) {
+    let {APP_ID, APP_KEY} = this
+    AV.initialize(APP_ID, APP_KEY)
+
+    let Page = AV.Object.extend('Page')
+      , pages = []
+    for (let i = 0, n = data.length; i < n; i++) {
+      let page = new Page()
+      page.set('domain', domain)
+      page.set('url', data[i].url)
+      page.set('title', data[i].title)
+      page.set('count', data[i].count)
+      pages.push(page.save())
+    }
+
+    AV.Promise.when.apply(AV.Promise, pages)
+      .try(function() {})
+      .catch(function(errors) {
+        console.log(errors)
+      })
   }
 }
 
