@@ -132,7 +132,7 @@ let Icarus = {
                 }
               }
               if (i === n) cachePages.push(page)
-              Storage.set('Icarus.pages', cachePages)
+              Storage.set('Icarus.pages', cachePages, false)
             }
             success(page)
 

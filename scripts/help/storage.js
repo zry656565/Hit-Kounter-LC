@@ -16,7 +16,7 @@ let Storage = {
   has(key) {
     if (!this.isSupported) return false
     let createdTime = localStorage[`${key}__created_time`]
-    return createdTime && parseFloat(createdTime) < Date.now() + this.EXPIRE_TIME * 1000
+    return createdTime && parseFloat(createdTime) + this.EXPIRE_TIME * 1000 > Date.now()
   },
 
   get(key) {
@@ -24,10 +24,10 @@ let Storage = {
     return this.has(key) ? JSON.parse(localStorage[key]) : undefined
   },
 
-  set(key, val) {
+  set(key, val, ifUpdateTime = true) {
     if (!this.isSupported) return false
     localStorage[key] = JSON.stringify(val)
-    localStorage[`${key}__created_time`] = Date.now()
+    if (ifUpdateTime) localStorage[`${key}__created_time`] = Date.now()
   },
 
   remove(key) {
