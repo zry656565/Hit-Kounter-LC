@@ -5,9 +5,7 @@
 
 'use strict'
 
-let utils = {
-  urlParams: {}
-}
+export let urlParams = {}
 
 // handle with params in url
 let url = location.href
@@ -22,4 +20,9 @@ if (loc != -1) {
   }
 }
 
-export default utils
+export function isEmpty(obj) {
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) return false;
+  }
+  return true;
+}

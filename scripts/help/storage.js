@@ -3,13 +3,13 @@
  * Email: jerry.zry@outlook.com
  */
 
-import utils from './utils'
+import {urlParams} from './utils'
 
 let Storage = {
   EXPIRE_TIME: 300,  // 5 minutes
 
   isSupported: (function() {
-    if (utils.urlParams['storage'] === 'false') return false
+    if (urlParams['storage'] === 'false') return false
     return !!localStorage
   }()),
 

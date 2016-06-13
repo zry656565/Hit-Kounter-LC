@@ -54,13 +54,13 @@ let Icarus = {
       let handleGetRequest = function(results) {
         switch(options.api) {
           case 'hk.page.get':
-            let hashMap = new Map()
+            let hashMap = {}
             for (let i = 0, n = results.length; i < n; i++) {
-              hashMap.set(results[i].url, results[i])
+              hashMap[results[i].url] = results[i]
             }
             let result = []
             for (let i = 0, n = data.pages.length; i < n; i++) {
-              let page = hashMap.get(data.pages[i].url)
+              let page = hashMap[data.pages[i].url]
               if (page) result.push(page)
               else result.push(data.pages[i])
             }

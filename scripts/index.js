@@ -9,6 +9,7 @@
 
 import Icarus from './icarus.js'
 import DOMReady from './help/ready.js'
+import {isEmpty} from './help/utils'
 
 require('../styles/index.less')
 
@@ -24,13 +25,13 @@ let HitKounter = {
 
     e.current = document.querySelectorAll('[data-hk-page=current]')
     e.topArea = document.querySelectorAll('[data-hk-top-pages]')
-    e.pages = new Map()
+    e.pages = {}
     for (let i = 0; i < pages.length; ++i) {
       let url = pages[i].attributes['data-hk-page'].value
-        , arr = e.pages.get(url)
+        , arr = e.pages[url]
       if (url == 'current') { continue }
       if (arr) { arr.push(pages[i]) }
-      else { e.pages.set(url, [pages[i]]) }
+      else { e.pages[url] = [pages[i]] }
     }
   },
   increment() {
@@ -50,8 +51,10 @@ let HitKounter = {
     let {elements} = this
     let pages = []
 
-    for (let iter = elements.pages.keys(), state = iter.next(); !state.done; state = iter.next()) {
-      pages.push({ url: state.value })
+    for (var p in elements.pages) {
+      if (elements.pages.hasOwnProperty(p)) {
+        pages.push({ url: p })
+      }
     }
 
     Icarus.request({
@@ -60,7 +63,7 @@ let HitKounter = {
       data: { pages: pages },
       success(results) {
         for (let i = 0; i < results.length; ++i) {
-          let arr = elements.pages.get(results[i].url)
+          let arr = elements.pages[results[i].url]
           for (let j = 0; j < arr.length; ++j) {
             arr[j].innerText = results[i].count
           }
@@ -97,7 +100,7 @@ DOMReady(function() {
 
   hk.scan()
   hk.increment()
-  if (e.pages.size > 0) hk.getPages()
+  if (!isEmpty(e.pages)) hk.getPages()
   if (e.topArea.length) hk.getTop()
 })
 
