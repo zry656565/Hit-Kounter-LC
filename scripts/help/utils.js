@@ -26,3 +26,11 @@ export function isEmpty(obj) {
   }
   return true;
 }
+
+export function formatNumber(num, interval = 3) {
+  let numStr = num.toString()
+  return [].reduce.call(numStr, (prev, c, index) => {
+    let isSeperator = (numStr.length - index - 1) % interval === 0 && index !== numStr.length - 1
+    return prev + c + (isSeperator ? ',' : '')
+  }, '')
+}

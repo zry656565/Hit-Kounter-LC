@@ -9,7 +9,7 @@
 
 import Icarus from './icarus.js'
 import DOMReady from './help/ready.js'
-import {isEmpty} from './help/utils'
+import { isEmpty, formatNumber } from './help/utils'
 
 require('../styles/index.less')
 
@@ -42,7 +42,7 @@ let HitKounter = {
       v: '1.0',
       success(result) {
         for (let i = 0; i < elements.current.length; ++i) {
-          elements.current[i].innerText = result.count
+          elements.current[i].innerText = formatNumber(result.count)
         }
       },
       failure(code, err) { console.log(code, err) }
@@ -66,7 +66,7 @@ let HitKounter = {
         for (let i = 0; i < results.length; ++i) {
           let arr = elements.pages[results[i].url]
           for (let j = 0; j < arr.length; ++j) {
-            arr[j].innerText = results[i].count
+            arr[j].innerText = formatNumber(results[i].count)
           }
         }
       },
@@ -81,7 +81,7 @@ let HitKounter = {
       v: '1.0',
       success(result) {
         for (let i = 0; i < elements.siteView.length; ++i) {
-          elements.siteView[i].innerText = result;
+          elements.siteView[i].innerText = formatNumber(result)
         }
       },
       failure(code, err) { console.log(code, err) }
