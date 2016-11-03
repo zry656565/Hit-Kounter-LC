@@ -5,7 +5,6 @@ const schedule = require('node-schedule')
 
 const APP_ID = 'yzbpXQpXf1rWVRfAAM8Durgh-gzGzoHsz'
 const APP_KEY = '020bjTvbiVinVQ21YtWAJ9t8'
-const INTERVAL = 10 * 60 * 1000;
 
 AV.init({
   appId: APP_ID,
@@ -14,7 +13,7 @@ AV.init({
 
 const Site = AV.Object.extend('Site')
 
-var j = schedule.scheduleJob('20 * * * *', calc); // every 20 minutes
+let j = schedule.scheduleJob('*/20 * * * *', calc); // every 20 minutes
 
 function calc() {
   let counter = {}
