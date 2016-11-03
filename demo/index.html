@@ -15,17 +15,19 @@
 
     <p>Current page: <span data-hk-page="current">{% current %}</span></p>
 
-    <p>Counting of http://localhost:63342/Hit-Kounter/demo/index.html:
-        <span data-hk-page="http://localhost:63342/Hit-Kounter/demo/index.html">{% counter %}</span>
+    <p>Counting of http://localhost:63342/Hit-Kounter-LC/demo/index.html:
+        <span data-hk-page="http://localhost:63342/Hit-Kounter-LC/demo/index.html">{% counter %}</span>
     </p>
 
-    <p>Counting of http://localhost:63342/Hit-Kounter/demo/index2.html:
-        <span data-hk-page="http://localhost:63342/Hit-Kounter/demo/index2.html">{% counter %}</span>
+    <p>Counting of http://localhost:63342/Hit-Kounter-LC/demo/index2.html:
+        <span data-hk-page="http://localhost:63342/Hit-Kounter-LC/demo/index2.html">{% counter %}</span>
     </p>
+
+    <p>Site Views: <span data-hk-site>{% site %}</span></p>
 
     <div data-hk-top-pages="5">{% hit kounter top pages area %}</div>
 
-<script src="https://cdn1.lncld.net/static/js/av-mini-0.6.10.js"></script>
+<script src="https://cdn1.lncld.net/static/js/av-min-1.5.0.js"></script>
 <script src="../build/hit-kounter-lc.js"></script>
 </body>
 </html>

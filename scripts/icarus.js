@@ -40,9 +40,15 @@ let Icarus = {
     let urlWithoutHash = location.href.replace(/#.*$/, '').replace(/\?.*$/, '')
       , domain = location.origin || `${location.protocol}//${location.host}`
 
-    AV.initialize(APP_ID, APP_KEY)
+    AV.init({
+      appId: APP_ID,
+      appKey: APP_KEY
+    })
+
     let Page = AV.Object.extend('Page')
       , pageQ = new AV.Query('Page')
+
+    pageQ.equalTo('domain', domain)
 
     if (options.api.match(/^hk\.page\.get/)) {
 
@@ -83,7 +89,6 @@ let Icarus = {
       if (cachePages) {
         handleGetRequest(cachePages)
       } else {
-        pageQ.equalTo('domain', domain)
         pageQ.find().then(function(results) {
           results = results.map(function(val) {
             return val.attributes
@@ -94,13 +99,23 @@ let Icarus = {
         }, onerror)
       }
 
+    } else if (options.api.match(/^hk\.site/)) {
+      let siteQ = new AV.Query('Site')
+      siteQ.equalTo('domain', domain)
+      switch(options.api) {
+        case 'hk.site.totalView':
+          siteQ.first().then(result => success(result.get('count')))
+          break
+        default:
+          invalidAPI()
+          break
+      }
     } else {
       switch(options.api) {
         case 'hk.page.increment':
           data.url = data.url || urlWithoutHash
           data.title = data.title || document.title
 
-          pageQ.equalTo('domain', domain)
           pageQ.equalTo('url', data.url)
           pageQ.find().try(function(results) {
 

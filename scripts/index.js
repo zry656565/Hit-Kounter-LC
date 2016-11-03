@@ -25,6 +25,7 @@ let HitKounter = {
 
     e.current = document.querySelectorAll('[data-hk-page=current]')
     e.topArea = document.querySelectorAll('[data-hk-top-pages]')
+    e.siteView = document.querySelectorAll('[data-hk-site]')
     e.pages = {}
     for (let i = 0; i < pages.length; ++i) {
       let url = pages[i].attributes['data-hk-page'].value
@@ -72,6 +73,20 @@ let HitKounter = {
       failure(code, err) { console.log(code, err) }
     })
   },
+  getSiteView() {
+    let {elements} = this
+
+    Icarus.request({
+      api: 'hk.site.totalView',
+      v: '1.0',
+      success(result) {
+        for (let i = 0; i < elements.siteView.length; ++i) {
+          elements.siteView[i].innerText = result;
+        }
+      },
+      failure(code, err) { console.log(code, err) }
+    })
+  },
   getTop() {
     let {elements} = this
     let topNum = elements.topArea[0].attributes['data-hk-top-pages'].value
@@ -101,6 +116,7 @@ DOMReady(function() {
   hk.scan()
   hk.increment()
   if (!isEmpty(e.pages)) hk.getPages()
+  if (e.siteView.length) hk.getSiteView()
   if (e.topArea.length) hk.getTop()
 })
 
