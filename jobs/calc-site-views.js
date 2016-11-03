@@ -1,6 +1,8 @@
 'use strict'
 
 const AV = require('leancloud-storage')
+const schedule = require('node-schedule')
+
 const APP_ID = 'yzbpXQpXf1rWVRfAAM8Durgh-gzGzoHsz'
 const APP_KEY = '020bjTvbiVinVQ21YtWAJ9t8'
 const INTERVAL = 10 * 60 * 1000;
@@ -12,7 +14,7 @@ AV.init({
 
 const Site = AV.Object.extend('Site')
 
-setInterval(calc, INTERVAL);
+var j = schedule.scheduleJob('20 * * * *', calc); // every 20 minutes
 
 function calc() {
   let counter = {}

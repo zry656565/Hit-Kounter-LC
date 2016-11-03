@@ -27,5 +27,6 @@
   },
   "dependencies": {
     "leancloud-storage": "1.5.1",
+    "node-schedule": "^1.2.0"
   }
 }
