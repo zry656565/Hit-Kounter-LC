@@ -13,7 +13,7 @@ AV.init({
 
 const Site = AV.Object.extend('Site')
 
-let j = schedule.scheduleJob('*/20 * * * *', calc); // every 20 minutes
+let j = schedule.scheduleJob('* */4 * * *', calc); // every 4 hours
 
 function calc() {
   let counter = {}
