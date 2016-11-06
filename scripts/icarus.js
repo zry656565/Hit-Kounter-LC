@@ -6,11 +6,14 @@
 'use strict'
 
 import Storage from './help/storage.js'
+import config from '../lc_config.json'
+
+const cfg = config.prod
 
 let Icarus = {
 
-  APP_ID: 'yzbpXQpXf1rWVRfAAM8Durgh-gzGzoHsz',
-  APP_KEY: '020bjTvbiVinVQ21YtWAJ9t8',
+  APP_ID: cfg.APP_ID,
+  APP_KEY: cfg.APP_KEY,
 
   request(options = { api: '' }) {
     let {APP_ID, APP_KEY} = this
