@@ -26,8 +26,6 @@
     "style-loader": "^0.13.0"
   },
   "dependencies": {
-    "json-loader": "^0.5.4",
-    "leancloud-storage": "1.5.1",
-    "node-schedule": "^1.2.0"
+    "json-loader": "^0.5.4"
   }
 }
