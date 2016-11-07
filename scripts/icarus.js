@@ -6,17 +6,12 @@
 'use strict'
 
 import Storage from './help/storage.js'
-import config from '../lc_config.json'
+import config from '../lc-config.json'
 
-const cfg = config.prod
 
 let Icarus = {
 
-  APP_ID: cfg.APP_ID,
-  APP_KEY: cfg.APP_KEY,
-
   request(options = { api: '' }) {
-    let {APP_ID, APP_KEY} = this
     let {success, failure, data} = options
     success = success || function(){}
     failure = failure || function(){}
@@ -43,10 +38,7 @@ let Icarus = {
     let urlWithoutHash = location.href.replace(/#.*$/, '').replace(/\?.*$/, '')
       , domain = location.origin || `${location.protocol}//${location.host}`
 
-    AV.init({
-      appId: APP_ID,
-      appKey: APP_KEY
-    })
+    AV.init(config.dev)
 
     let Page = AV.Object.extend('Page')
       , pageQ = new AV.Query('Page')

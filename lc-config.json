@@ -1,0 +1,10 @@
+{
+  "dev": {
+    "appId": "JsljTKpXnRixFJyhfiuLoc8Y-gzGzoHsz",
+    "appKey": "5hC7G7xVwaTGMhHwny4UBfG1"
+  },
+  "prod": {
+    "appId": "yzbpXQpXf1rWVRfAAM8Durgh-gzGzoHsz",
+    "appKey": "020bjTvbiVinVQ21YtWAJ9t8"
+  }
+}
