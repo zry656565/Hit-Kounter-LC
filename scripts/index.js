@@ -1,6 +1,6 @@
 /** @preserve
  * Hit Kounter Help script v0.3.0
- * Home: https://github.com/zry656565/Hit-Kounter
+ * Home: https://github.com/zry656565/Hit-Kounter-LC
  * Author: Jerry Zou
  * Email: jerry.zry@outlook.com
  */
@@ -13,7 +13,7 @@ import { isEmpty, formatNumber } from './help/utils'
 
 require('../styles/index.less')
 
-let TEMPLATES= {
+let TEMPLATES = {
   TOP_AREA: require('../templates/top-area.jade')
 }
 

@@ -6,10 +6,24 @@
 'use strict'
 
 import Storage from './help/storage.js'
-import config from '../lc-config.json'
+import lcConfig from '../lc-config.json'
 
 
 let Icarus = {
+
+  init() {
+    let config = window.ICARUS_CONFIG;
+    if (config) {
+      if (!config.appId || !config.appKey) {
+        console.warning('ICARUS_CONFIG should have two properties: appId & appKey');
+        config = null;
+      }
+    }
+    if (!config) {
+      config = NODE_ENV === 'production' ? lcConfig.prod : lcConfig.dev;
+    }
+    this.config = config;
+  },
 
   request(options = { api: '' }) {
     let {success, failure, data} = options
@@ -38,7 +52,7 @@ let Icarus = {
     let urlWithoutHash = location.href.replace(/#.*$/, '').replace(/\?.*$/, '')
       , domain = location.origin || `${location.protocol}//${location.host}`
 
-    AV.init(config.dev)
+    AV.init(this.config)
 
     let Page = AV.Object.extend('Page')
       , pageQ = new AV.Query('Page')
@@ -156,8 +170,7 @@ let Icarus = {
   },
 
   clearLocalhost(success, error) {
-    let {APP_ID, APP_KEY} = this
-    AV.initialize(APP_ID, APP_KEY)
+    AV.init(this.config)
 
     let pageQ = new AV.Query('Page')
 
@@ -169,8 +182,7 @@ let Icarus = {
   },
 
   importData(domain, data) {
-    let {APP_ID, APP_KEY} = this
-    AV.initialize(APP_ID, APP_KEY)
+    AV.init(this.config)
 
     let Page = AV.Object.extend('Page')
       , pages = []
@@ -190,6 +202,8 @@ let Icarus = {
       })
   }
 }
+
+Icarus.init()
 
 window.Icarus = Icarus
 export default Icarus

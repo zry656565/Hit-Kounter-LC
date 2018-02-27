@@ -1,6 +1,6 @@
 /**
- * Author: Jerry Zou
- * Email: jerry.zry@outlook.com
+ * @author: Jerry Zou
+ * @email: jerry.zry@outlook.com
  */
 
 import {urlParams} from './utils'
