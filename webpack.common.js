@@ -1,3 +1,5 @@
+const path = require('path')
+
 module.exports = {
   entry: {
     'hit-kounter-lc': './scripts/index.js'
@@ -32,5 +34,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['', '.js']
-  }
+  },
 }
+
