@@ -10,7 +10,7 @@ Include scripts:
 
 ```html
 <script src="https://cdn1.lncld.net/static/js/av-min-1.5.0.js"></script>
-<script src="https://jerry-cdn.b0.upaiyun.com/hit-kounter/hit-kounter-lc-0.3.0.js"></script>
+<script src="https://jerryz.sgp1.cdn.digitaloceanspaces.com/lib/hit-kounter/hit-kounter-lc-0.3.0.js"></script>
 ```
 
 ---
