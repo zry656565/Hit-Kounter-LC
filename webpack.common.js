@@ -5,30 +5,28 @@ module.exports = {
     'hit-kounter-lc': './scripts/index.js'
   },
   output: {
-    path: './build',
+    path: path.join(__dirname, 'build'),
     filename: '[name].js'
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'babel',
-        query: {
-          presets: ['es2015']
-        }
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        },
       },
       {
         test: /\.less$/,
-        loader: 'style!css!less'
+        use: ['style-loader', 'css-loader', 'less-loader'],
       },
       {
         test: /\.jade$/,
-        loader: 'jade'
-      },
-      {
-        test: /\.json$/,
-        loader: 'json'
+        use: ['jade-loader'],
       }
     ]
   },
