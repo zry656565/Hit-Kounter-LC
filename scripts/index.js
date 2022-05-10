@@ -1,5 +1,5 @@
 /** @preserve
- * Hit Kounter Help script v0.3.0
+ * Hit Kounter Help script v0.4.0
  * Home: https://github.com/zry656565/Hit-Kounter-LC
  * Author: Jerry Zou
  * Email: jerry.zry@outlook.com

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo for Hit Kounter</title>
+    <style>
+        [data-hk-top-pages] {
+            width: 300px;
+            padding: 5px 10px;
+            border: 1px solid #aaa;
+        }
+    </style>
+</head>
+<body>
+
+    <p>Current page: <span data-hk-page="current">{% current %}</span></p>
+
+    <p>Counting of http://127.0.0.1:8899/Hit-Kounter-LC/demo/index.html:
+        <span data-hk-page="http://127.0.0.1:8899/Hit-Kounter-LC/demo/index.html">{% counter %}</span>
+    </p>
+
+    <p>Counting of http://jerryzou.com:
+        <span data-hk-page="http://jerryzou.com">{% counter %}</span>
+    </p>
+
+    <p>Site Views: <span data-hk-site>{% site %}</span></p>
+
+    <div data-hk-top-pages="5">{% hit kounter top pages area %}</div>
+<script src="build/hit-kounter-lc.js"></script>
+</body>
+</html>

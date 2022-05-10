@@ -7,14 +7,15 @@ var expect = chai.expect;
 
 describe('Icarus', function() {
 
-  this.timeout(1000)
+  this.timeout(5000)
 
   before(function(done) {
     Icarus.clearLocalhost(function() {
-      localStorage.clear();
-      done();
-    }, function() {
+      localStorage.clear()
+      done()
+    }, function(e) {
       console.error('clear localhost error!')
+      console.error(e)
     })
   })
 

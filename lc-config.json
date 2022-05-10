@@ -1,10 +1,12 @@
 {
-  "dev": {
-    "appId": "JsljTKpXnRixFJyhfiuLoc8Y-gzGzoHsz",
-    "appKey": "5hC7G7xVwaTGMhHwny4UBfG1"
-  },
   "prod": {
     "appId": "yzbpXQpXf1rWVRfAAM8Durgh-gzGzoHsz",
-    "appKey": "020bjTvbiVinVQ21YtWAJ9t8"
+    "appKey": "020bjTvbiVinVQ21YtWAJ9t8",
+    "serverURL": "https://lc-api.jerryzou.com"
+  },
+  "dev": {
+    "appId": "IF6G8qTVJXQbaRhy182SxnrP-gzGzoHsz",
+    "appKey": "90vgl1Xnt3FzQNmNV3bAoY5T",
+    "serverURL": "https://lc-api-staging.jerryzou.com"
   }
 }

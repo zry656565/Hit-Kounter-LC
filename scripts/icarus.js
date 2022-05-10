@@ -5,17 +5,20 @@
 
 'use strict'
 
+import AV from 'leancloud-storage'
+
 import Storage from './help/storage.js'
 import lcConfig from '../lc-config.json'
 
+window.AV = AV
 
 let Icarus = {
 
   init() {
     let config = window.ICARUS_CONFIG;
     if (config) {
-      if (!config.appId || !config.appKey) {
-        console.warning('ICARUS_CONFIG should have two properties: appId & appKey');
+      if (!config.appId || !config.appKey || !config.serverURL) {
+        console.warning('ICARUS_CONFIG should have three properties: appId,  appKey, serverURL');
         config = null;
       }
     }
@@ -113,7 +116,9 @@ let Icarus = {
       siteQ.equalTo('domain', domain)
       switch(options.api) {
         case 'hk.site.totalView':
-          siteQ.first().then(result => success(result.get('count')))
+          siteQ.first().then(function(result) {
+            success(result ? result.get('count'): 0)
+          })
           break
         default:
           invalidAPI()
@@ -126,8 +131,7 @@ let Icarus = {
           data.title = data.title || document.title
 
           pageQ.equalTo('url', data.url)
-          pageQ.find().try(function(results) {
-
+          pageQ.find().then(function(results) {
             if (results.length <= 0) {
               return (new Page()).save({
                 domain: domain,
@@ -136,15 +140,15 @@ let Icarus = {
                 count: 0
               });
             } else {
-              return AV.Promise.as(results[0])
+              return Promise.resolve(results[0])
             }
 
-          }).try(function(page) {
+          }).then(function(page) {
 
             page.increment('count')
             return page.save()
 
-          }).try(function(page) {
+          }).then(function(page) {
 
             page = page.attributes
             let cachePages = Storage.get('Icarus.pages')
@@ -172,13 +176,22 @@ let Icarus = {
   clearLocalhost(success, error) {
     AV.init(this.config)
 
-    let pageQ = new AV.Query('Page')
+    const USERNAME = 'admin'
+    const PASSWORD = 'admin0035'
 
-    pageQ.startsWith('domain', 'http://localhost')
-    pageQ.destroyAll().then(function() {
-      console.log('Clear localhost DONE.')
-      success()
-    }, error)
+    AV.User.logIn(USERNAME, PASSWORD).then(function (loginedUser) {
+      let pageQ = new AV.Query('Page')
+
+      pageQ.startsWith('domain', 'http://localhost:8899')
+
+      pageQ.destroyAll().then(function() {
+        console.log('Clear localhost DONE.')
+        success()
+      }, error)
+
+    }, function (error) {
+      alert(JSON.stringify(error))
+    })
   },
 
   importData(domain, data) {
@@ -196,7 +209,7 @@ let Icarus = {
     }
 
     AV.Promise.when.apply(AV.Promise, pages)
-      .try(function() {})
+      .then(function() {})
       .catch(function(errors) {
         console.log(errors)
       })
